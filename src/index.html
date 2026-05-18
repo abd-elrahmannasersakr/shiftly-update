@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>نظام إدارة الحضور والرواتب</title>
+  <link rel="icon" type="image/png" href="../assets/icon.png" />
+  <link rel="stylesheet" href="styles/main.css?v=5" />
+  <link rel="stylesheet" href="styles/components.css?v=4" />
+</head>
+<body>
+
+  <!-- Splash screen -->
+  <div class="splash-screen" id="splashScreen">
+    <div class="splash-inner">
+      <div class="splash-logo">
+        <div class="splash-logo-ring"></div>
+        <div class="splash-logo-text">shiftly</div>
+      </div>
+      <div class="splash-title">نظام إدارة الحضور والرواتب</div>
+      <div class="splash-subtitle">Attendance & Payroll Management System</div>
+      <div class="splash-dots">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="splash-credit">
+        <span class="splash-credit-label">تطوير وتصميم</span>
+        <span class="splash-credit-name">sir / saqr</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login screen -->
+  <div class="login-screen" id="loginScreen">
+    <div class="login-card">
+      <div class="login-logo">shiftly</div>
+      <div class="login-title">نظام إدارة الحضور والرواتب</div>
+      <div class="login-subtitle">سجّل الدخول للمتابعة</div>
+
+      <div class="login-error" id="loginError"></div>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label class="form-label">المستخدم</label>
+          <select class="form-control" id="loginAccount" autofocus required lang="ar" dir="rtl">
+            <option value="">جاري التحميل...</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">كلمة المرور</label>
+          <input type="password" class="form-control" id="loginPassword" autocomplete="current-password" required lang="ar" dir="rtl" inputmode="text" />
+        </div>
+        <button type="submit" class="btn btn-block mt-3" id="loginBtn">تسجيل الدخول</button>
+      </form>
+
+      <div class="login-policies-link">
+        <button type="button" id="viewPoliciesBtn" class="btn-link-subtle"><span class="ui-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg></span> عرض لائحة السياسات</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Public Policies Overlay (no login required) -->
+  <div class="policies-overlay hidden" id="policiesOverlay">
+    <div class="policies-panel">
+      <div class="policies-panel-header">
+        <div>
+          <div class="policies-panel-title"><span class="ui-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg></span> لائحة السياسات</div>
+          <div class="policies-panel-sub">نظام النقاط — المكافآت والعقوبات</div>
+        </div>
+        <button type="button" class="modal-close" id="closePoliciesBtn"><span class="ui-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span></button>
+      </div>
+      <div id="policiesContent" class="policies-panel-body">
+        <div class="policies-loading">جاري التحميل...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main app -->
+  <div class="app" id="appShell" style="display:none">
+    <!-- Top header -->
+    <header class="topbar">
+      <button class="icon-btn sidebar-toggle-btn" id="sidebarToggleBtn" title="طي القائمة"><span class="ui-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></span></button>
+
+      <div class="brand">
+        <div class="logo">shiftly</div>
+        <div>
+          <div class="brand-title">نظام الحضور والرواتب</div>
+          <div class="brand-sub">إدارة الموظفين والحضور والرواتب</div>
+        </div>
+      </div>
+
+      <div class="topbar-spacer"></div>
+
+      <div class="user-pill" id="userPill">
+        <div class="user-pill-avatar" id="userPillAvatar">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </div>
+        <div class="info">
+          <div class="name" id="userName">—</div>
+          <span class="role-tag" id="userRoleTag">—</span>
+        </div>
+      </div>
+
+      <!-- Theme picker button -->
+      <button class="icon-btn" id="checkUpdateBtn" title="التحقق من التحديثات"><span class="ui-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg></span><span id="updateDot" style="display:none;position:absolute;top:4px;right:4px;width:8px;height:8px;border-radius:50%;background:var(--danger,#e53e3e);"></span></button>
+      <button class="icon-btn" id="themePickerBtn" title="تغيير لون التطبيق"><span class="ui-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 011.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg></span></button>
+
+      <!-- Change password button (manager only) -->
+      <button class="icon-btn" id="changePasswordBtn" title="تغيير كلمة المرور" style="display:none"><span class="ui-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.778 7.778 5.5 5.5 0 017.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg></span></button>
+
+      <button class="icon-btn" id="logoutBtn" title="تسجيل الخروج"><span class="ui-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.36 6.64a9 9 0 11-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg></span></button>
+    </header>
+
+    <div class="layout">
+      <aside class="sidebar" id="sidebar"></aside>
+      <main class="content" id="content"></main>
+    </div>
+  </div>
+
+  <!-- Toast container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Modal container -->
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal" id="modal"></div>
+  </div>
+
+  <!-- Core scripts -->
+  <script src="js/utils.js"></script>
+  <script src="js/icons.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+
+  <!-- Employee views -->
+  <script src="js/employee/attendance.js"></script>
+  <script src="js/employee/salary.js"></script>
+  <script src="js/employee/advances.js"></script>
+  <script src="js/employee/messages.js"></script>
+  <script src="js/employee/archive.js"></script>
+
+  <!-- Manager views -->
+  <script src="js/manager/employees.js"></script>
+  <script src="js/manager/policies.js"></script>
+  <script src="js/manager/incentives.js"></script>
+  <script src="js/manager/archive.js"></script>
+  <script src="js/manager/dashboard.js"></script>
+  <script src="js/manager/tabs/messages.js"></script>
+  <script src="js/manager/tabs/cleaning.js"></script>
+  <script src="js/manager/tabs/revenue.js"></script>
+  <script src="js/manager/tabs/policies.js?v=3"></script>
+  <script src="js/manager/tabs/exit-permissions.js"></script>
+  <script src="js/manager/tabs/salary.js?v=3"></script>
+
+  <!-- App entry -->\n  <script src="js/app.js"></script>
+
+  <!-- Public policies panel + manager password change (no login needed for policies) -->
+  <script src="js/public-policies.js"></script>
+
+  <!-- نظام التحديث التلقائي -->
+  <script>
+  (function () {
+    const btn = document.getElementById('checkUpdateBtn');
+    const dot = document.getElementById('updateDot');
+    if (!btn) return;
+
+    // زر التحديث اليدوي
+    btn.addEventListener('click', () => {
+      if (window.api && window.api['update:check']) {
+        btn.disabled = true;
+        btn.title = 'جاري التحقق...';
+        window.api['update:check']().finally(() => {
+          btn.disabled = false;
+          btn.title = 'التحقق من التحديثات';
+        });
+      }
+    });
+
+    // استقبال أحداث الـ updater من Main Process
+    if (window.updater && window.updater.onStatus) {
+      window.updater.onStatus((data) => {
+        switch (data.stage) {
+          case 'available':
+            dot.style.display = 'block'; // نقطة حمراء تُنبّه بوجود تحديث
+            btn.title = `تحديث جديد متاح: v${data.remote}`;
+            break;
+          case 'up-to-date':
+            dot.style.display = 'none';
+            btn.title = 'التحقق من التحديثات ✅';
+            setTimeout(() => { btn.title = 'التحقق من التحديثات'; }, 3000);
+            break;
+          case 'downloading':
+            btn.title = `جاري التنزيل... ${data.progress || 0}%`;
+            break;
+          case 'downloaded':
+            btn.title = 'اكتمل التنزيل';
+            break;
+          case 'error':
+            btn.title = 'خطأ في التحديث — انقر للمحاولة مجدداً';
+            break;
+        }
+      });
+    }
+  })();
+  </script>
+</body>
+</html>

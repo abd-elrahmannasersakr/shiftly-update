@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline'"/>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 100%; height: 100%;
+    background: transparent;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+    user-select: none;
+    -webkit-app-region: drag;
+  }
+
+  .card {
+    width: 100%; height: 100%;
+    background: linear-gradient(145deg, #1e3a5f 0%, #0f2340 60%, #0a1628 100%);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Subtle glow circles */
+  .card::before {
+    content: '';
+    position: absolute;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%);
+    top: -80px; right: -80px;
+    border-radius: 50%;
+  }
+  .card::after {
+    content: '';
+    position: absolute;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(16,185,129,0.10) 0%, transparent 70%);
+    bottom: -60px; left: -60px;
+    border-radius: 50%;
+  }
+
+  .logo-wrap {
+    margin-bottom: 20px;
+    animation: popIn .5s cubic-bezier(.34,1.56,.64,1) both;
+  }
+
+  .logo-circle {
+    width: 80px; height: 80px;
+    background: linear-gradient(135deg, #3b82f6, #10b981);
+    border-radius: 22px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 38px;
+    box-shadow: 0 8px 32px rgba(59,130,246,0.4);
+  }
+
+  .app-name {
+    font-size: 28px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 2px;
+    animation: fadeUp .5s .2s both;
+  }
+
+  .app-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,0.55);
+    margin-top: 6px;
+    margin-bottom: 32px;
+    animation: fadeUp .5s .35s both;
+  }
+
+  /* Progress bar */
+  .bar-track {
+    width: 200px; height: 3px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 99px;
+    overflow: hidden;
+    animation: fadeUp .5s .45s both;
+  }
+  .bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #3b82f6, #10b981);
+    border-radius: 99px;
+    animation: fill 2.2s .5s cubic-bezier(.4,0,.2,1) forwards;
+  }
+
+  .loading-text {
+    margin-top: 12px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+    animation: fadeUp .5s .5s both;
+    letter-spacing: .5px;
+  }
+
+  .version {
+    position: absolute;
+    bottom: 16px;
+    font-size: 10px;
+    color: rgba(255,255,255,0.2);
+  }
+
+  @keyframes popIn {
+    from { transform: scale(.6); opacity: 0; }
+    to   { transform: scale(1);  opacity: 1; }
+  }
+  @keyframes fadeUp {
+    from { transform: translateY(12px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+  @keyframes fill {
+    0%   { width: 0%; }
+    40%  { width: 55%; }
+    70%  { width: 78%; }
+    90%  { width: 90%; }
+    100% { width: 100%; }
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo-wrap">
+    <div class="logo-circle">⏱</div>
+  </div>
+  <div class="app-name">Shiftly</div>
+  <div class="app-sub">نظام إدارة الحضور والرواتب</div>
+  <div class="bar-track">
+    <div class="bar-fill"></div>
+  </div>
+  <div class="loading-text">جاري التحميل...</div>
+  <div class="version">v1.0.0</div>
+</div>
+</body>
+</html>
